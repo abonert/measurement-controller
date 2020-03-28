@@ -1,0 +1,27 @@
+logging:
+  level:
+    software.jevera.measurementcontroller: DEBUG
+
+# ===================================================================
+# Application specific properties
+# Add your own application properties here, see the ApplicationProperties class
+# to have type-safe configuration
+# ===================================================================
+application:
+  scheduler:
+    thread-pool-size: 5
+  vendor-configurations:
+    VENDOR_ONE:
+      subscription-type: POLLER
+      storage-type: AWS_S3
+      http:
+        method: GET
+        endpoint: http://vendor-1/data
+      cron-expression: 0/5 * * * * *
+    VENDOR_TWO:
+      subscription-type: POLLER
+      storage-type: RDBMS
+      http:
+        method: GET
+        endpoint: http://vendor-2/data
+      cron-expression: 0/10 * * * * *
