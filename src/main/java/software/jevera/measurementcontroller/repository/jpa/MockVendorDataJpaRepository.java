@@ -18,9 +18,9 @@ public class MockVendorDataJpaRepository implements CrudRepository<VendorData, L
     @Override
     public <S extends VendorData> S save(S entity) {
         if (Objects.isNull(entity.getId())) {
-            log.info("VendorData saved {}", entity);
+            log.info("Save data to RDMBS: {}", entity);
         } else {
-            log.info("VendorData updated {}", entity);
+            log.info("Updated in RDBMS {}", entity);
         }
         return entity;
     }

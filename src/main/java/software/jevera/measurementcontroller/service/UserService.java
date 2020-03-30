@@ -9,4 +9,6 @@ public interface UserService {
     UserDTO edit(UserDTO dto);
 
     void remove(Long id);
+
+    void triggerChunk(Long id, Long vendorId);
 }

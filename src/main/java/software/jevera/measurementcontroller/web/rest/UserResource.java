@@ -39,4 +39,11 @@ public class UserResource {
         userService.remove(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{subscriptionId}/chunk/{vendorId}")
+    public ResponseEntity<Void> triggerChunk(@PathVariable Long subscriptionId,
+                                             @PathVariable Long vendorId) {
+        userService.triggerChunk(subscriptionId, vendorId);
+        return ResponseEntity.accepted().build();
+    }
 }

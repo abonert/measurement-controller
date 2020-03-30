@@ -25,3 +25,12 @@ application:
         method: GET
         endpoint: http://vendor-2/data
       cron-expression: 0/10 * * * * *
+    VENDOR_THREE:
+      subscription-type: SUBSCRIBER
+      storage-type: RDBMS
+      http:
+        method: POST
+        endpoint: http://subscribe-to-chunk/
+      chunk:
+        method: GET
+        endpoint: http://get-data-from-chunk/

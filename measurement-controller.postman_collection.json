@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8df2bc4f-1ede-4009-a102-5329f6e3f25a",
+		"_postman_id": "daedc3ae-01f9-4cb7-840e-c14a776ef00e",
 		"name": "measurement-controller",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -145,6 +145,107 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "create user with subscriber",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dd3bfa21-64ad-414b-9ce8-794023909fe7",
+						"exec": [
+							"var userId = JSON.parse(responseBody).id;",
+							"pm.collectionVariables.set(\"user_id\", userId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"vendors\": [\n\t\t{\n\t\t\t\"name\": \"VENDOR_ONE\"\n\t\t},\n\t\t{\n\t\t\t\"name\": \"VENDOR_THREE\"\n\t\t}\n\t]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "triger chunk",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dd3bfa21-64ad-414b-9ce8-794023909fe7",
+						"exec": [
+							"var userId = JSON.parse(responseBody).id;",
+							"pm.collectionVariables.set(\"user_id\", userId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"vendors\": [\n\t\t{\n\t\t\t\"name\": \"VENDOR_ONE\"\n\t\t},\n\t\t{\n\t\t\t\"name\": \"VENDOR_THREE\"\n\t\t}\n\t]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users/-1844157587084890551/chunk/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"-1844157587084890551",
+						"chunk",
+						"3"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -171,7 +272,7 @@
 	],
 	"variable": [
 		{
-			"id": "8715be5a-890a-404b-ada0-2f063f41ed4d",
+			"id": "8dab9d71-7b7c-4298-a185-dcc31e634f0a",
 			"key": "user_id",
 			"value": "",
 			"type": "string"

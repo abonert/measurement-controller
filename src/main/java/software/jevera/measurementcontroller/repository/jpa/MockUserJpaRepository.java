@@ -7,10 +7,9 @@ import org.springframework.stereotype.Repository;
 import software.jevera.measurementcontroller.config.ApplicationProperties;
 import software.jevera.measurementcontroller.domain.user.User;
 import software.jevera.measurementcontroller.domain.vendor.Vendor;
+import software.jevera.measurementcontroller.domain.vendor.enumeration.VendorSubscriptionType;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -41,12 +40,22 @@ public class MockUserJpaRepository implements CrudRepository<User, Long> {
         log.info("User found by ID {}", id);
         User entity = new User();
         entity.setId(id);
+
+        Set<String> subscriberVendors = applicationProperties.getVendorConfigurations().entrySet()
+                .stream()
+                .filter(config -> VendorSubscriptionType.SUBSCRIBER.equals(config.getValue().getSubscriptionType()))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+
         entity.setVendors(
                 applicationProperties.getVendorConfigurations().keySet()
                         .stream()
                         .map(vendorName -> {
                             Vendor vendor = new Vendor();
                             vendor.setName(vendorName);
+                            if (subscriberVendors.contains(vendor.getName())) {
+                                vendor.setId(3L);
+                            }
                             return vendor;
                         })
                         .collect(Collectors.toList()));

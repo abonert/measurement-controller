@@ -12,7 +12,7 @@ public class MockAwsS3VendorDataStorage implements VendorDataStorage {
 
     @Override
     public void store(VendorData data) {
-        log.info("Save date to AWS S3: {}", data);
+        log.info("Save data to AWS S3: {}", data);
     }
 
     @Override

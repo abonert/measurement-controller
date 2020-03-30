@@ -33,6 +33,7 @@ public class ApplicationProperties {
     public static class VendorConfiguration {
         private VendorSubscriptionType subscriptionType;
         private HttpConfiguration http;
+        private HttpConfiguration chunk;
         private VendorStorageType storageType;
         private String cronExpression;
 
