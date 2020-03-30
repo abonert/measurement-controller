@@ -1,17 +1,24 @@
 package software.jevera.measurementcontroller.repository.jpa;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import software.jevera.measurementcontroller.config.ApplicationProperties;
 import software.jevera.measurementcontroller.domain.user.User;
+import software.jevera.measurementcontroller.domain.vendor.Vendor;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Repository
+@RequiredArgsConstructor
 @Slf4j
 public class MockUserJpaRepository implements CrudRepository<User, Long> {
+
+    private final ApplicationProperties applicationProperties;
 
     @Override
     public <S extends User> S save(S entity) {
@@ -34,6 +41,15 @@ public class MockUserJpaRepository implements CrudRepository<User, Long> {
         log.info("User found by ID {}", id);
         User entity = new User();
         entity.setId(id);
+        entity.setVendors(
+                applicationProperties.getVendorConfigurations().keySet()
+                        .stream()
+                        .map(vendorName -> {
+                            Vendor vendor = new Vendor();
+                            vendor.setName(vendorName);
+                            return vendor;
+                        })
+                        .collect(Collectors.toList()));
         return Optional.of(entity);
     }
 

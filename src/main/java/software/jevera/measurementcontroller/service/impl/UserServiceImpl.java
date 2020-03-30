@@ -5,7 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import software.jevera.measurementcontroller.domain.user.User;
 import software.jevera.measurementcontroller.domain.user.UserState;
-import software.jevera.measurementcontroller.service.SchedulingManager;
 import software.jevera.measurementcontroller.service.UserService;
 import software.jevera.measurementcontroller.service.VendorSubscriptionProvider;
 import software.jevera.measurementcontroller.service.dto.UserDTO;
@@ -20,19 +19,14 @@ public class UserServiceImpl implements UserService {
     private final VendorSubscriptionProvider vendorSubscriptionProvider;
     private final CrudRepository<User, Long> userRepository;
     private final UserMapper userMapper;
-    private final SchedulingManager schedulingManager;
 
     @Override
     public UserDTO add(UserDTO dto) {
         User entity = userMapper.toEntity(dto);
         entity.setState(UserState.CREATED);
-
         User savedEntity = of(userRepository.save(entity)).orElseThrow();
-
         dto.getVendors().forEach(vendor -> vendorSubscriptionProvider.subscribe(savedEntity.getId(), vendor.getName()));
-
         savedEntity.setState(UserState.IN_PROGRESS);
-
         return userMapper.toDto(savedEntity);
     }
 
@@ -41,8 +35,8 @@ public class UserServiceImpl implements UserService {
         Long id = dto.getId();
         User updatedEntity = userRepository.findById(id)
                 .map(entity -> {
+                    vendorSubscriptionProvider.destroyAll(entity);
                     userMapper.updateEntity(dto, entity);
-                    schedulingManager.destroy(id);
                     return userRepository.save(entity);
                 })
                 .orElseThrow();
@@ -52,7 +46,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void remove(Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        vendorSubscriptionProvider.destroyAll(user);
         userRepository.deleteById(id);
-        schedulingManager.destroy(id);
     }
 }

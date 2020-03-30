@@ -29,11 +29,16 @@ public class BasicPollerVendorSubscriptionTask implements VendorSubscriptionTask
     private final VendorDataStorageResolver dataStorageResolver;
 
     @Override
-    public void execute(Long subscriptionId,
-                        ApplicationProperties.VendorConfiguration configuration) {
+    public void subscribe(Long subscriptionId,
+                          ApplicationProperties.VendorConfiguration configuration) {
         VendorDataStorage storage = dataStorageResolver.getStorage(configuration.getStorageType());
         Runnable task = buildSubscriptionTask(subscriptionId, configuration.getHttp(), storage);
         schedulingManager.schedule(subscriptionId, task, new CronTrigger(configuration.getCronExpression()));
+    }
+
+    @Override
+    public void destroy(Long subscriptionId) {
+        schedulingManager.destroy(subscriptionId);
     }
 
     @Override

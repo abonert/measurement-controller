@@ -9,11 +9,17 @@ import software.jevera.measurementcontroller.domain.vendor.enumeration.VendorSub
 public interface VendorSubscriptionTask {
 
     /**
-     * Executes subscription to data vendor
+     * Subscribe to receive vendor data
      * @param subscriptionId the subscription identifier
      * @param configuration the vendor subscription configuration
      */
-    void execute(Long subscriptionId, ApplicationProperties.VendorConfiguration configuration);
+    void subscribe(Long subscriptionId, ApplicationProperties.VendorConfiguration configuration);
+
+    /**
+     * Destroy subscription
+     * @param subscriptionId the subscription identifier
+     */
+    void destroy(Long subscriptionId);
 
     /**
      * Check whether task can process subscription
